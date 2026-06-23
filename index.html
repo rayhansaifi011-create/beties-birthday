@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Parinita!</title>
+<style>
+  /* Import a realistic handwriting font */
+  @import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap');
+
+  * {margin: 0; padding: 0; box-sizing: border-box;}
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    color: white;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+
+  /* Start Screen */
+  .start-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #0f0c20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: opacity 1s;
+  }
+  .start-screen h2 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-align: center;
+    padding: 0 20px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% {transform: scale(1);}
+    50% {transform: scale(1.05);}
+  }
+  .start-btn {
+    background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+    border: none;
+    color: white;
+    padding: 18px 40px;
+    border-radius: 50px;
+    font-size: 1.3em;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 8px 20px rgba(255,117,140,0.4);
+  }
+  .start-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 30px rgba(255,117,140,0.6);
+  }
+
+  /* Main content hidden initially */
+  .main-content {
+    opacity: 0;
+    transition: opacity 1.5s;
+  }
+  .main-content.show {opacity: 1;}
+
+  /* Animated cake background */
+  body::before {
+    content: "🎂";
+    position: fixed;
+    font-size: 500px;
+    opacity: 0.05;
+    bottom: -100px;
+    right: -50px;
+    animation: bounce 4s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @keyframes bounce {
+    0%, 100% {transform: translateY(0) rotate(-5deg);}
+    50% {transform: translateY(-20px) rotate(5deg);}
+  }
+
+  .container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  h1 {
+    font-size: 3em;
+    margin-bottom: 15px;
+    text-align: center;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% {transform: translateY(0);}
+    50% {transform: translateY(-10px);}
+  }
+
+  /* Friendship Timer */
+  .friendship-timer {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-size: 1.1em;
+    margin-bottom: 30px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  }
+
+  /* CSS Candle */
+  .candle-container {
+    width: 60px;
+    height: 140px;
+    position: relative;
+    margin-bottom: 30px;
+    cursor: pointer;
+  }
+  .candle-stick {
+    width: 24px;
+    height: 80px;
+    background: linear-gradient(to right, #e9d5ff, #c084fc);
+    border-radius: 6px 6px 0 0;
+    position: absolute;
+    bottom: 0;
+    left: 18px;
+    box-shadow: inset 2px 0 5px rgba(255,255,255,0.6);
+  }
+  .candle-wick {
+    width: 2px;
+    height: 12px;
+    background: #222;
+    position: absolute;
+    top: 48px;
+    left: 29px;
+  }
+  .candle-flame {
+    width: 16px;
+    height: 26px;
+    background: radial-gradient(ellipse at bottom, #ff9700 0%, #ffdd00 100%);
+    border-radius: 50% 50% 20% 20%;
+    position: absolute;
+    top: 24px;
+    left: 22px;
+    box-shadow: 0 0 20px #ff9700, 0 0 40px #ffdd00;
+    animation: flicker 0.1s ease-in-out infinite alternate;
+  }
+  @keyframes flicker {
+    0% {transform: skewX(-2deg) scale(1.0); }
+    100% {transform: skewX(2deg) scale(0.9); }
+  }
+  .candle-container.blown .candle-flame { display: none; }
+  .candle-container.blown .smoke {
+    position: absolute;
+    top: 15px; left: 26px;
+    width: 8px; height: 20px;
+    background: rgba(220,220,220,0.6);
+    border-radius: 50%; filter: blur(2px);
+    animation: disappear 1.5s ease-out forwards;
+  }
+  @keyframes disappear {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-30px) scale(2); opacity: 0; }
+  }
+
+  /* --- FUNKY PHOTO BOARD --- */
+  .funky-photo-board {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    max-width: 900px;
+    margin-bottom: 50px;
+    padding: 20px;
+  }
+
+  /* Base Frame Settings */
+  .frame {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    z-index: 2;
+  }
+  .frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* Hover Effect: Make them pop! */
+  .frame:hover {
+    transform: scale(1.3) rotate(0deg) !important;
+    z-index: 100;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+  }
+
+  /* 1. Polaroid with Masking Tape */
+  .frame-polaroid {
+    background: white;
+    padding: 10px 10px 35px 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transform: rotate(-6deg);
+  }
+  .tape {
+    position: absolute;
+    top: -10px; left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    width: 60px; height: 25px;
+    background: rgba(255, 255, 230, 0.6);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    z-index: 5;
+  }
+
+  /* 2. Cyberpunk Neon Glow */
+  .frame-neon {
+    border: 4px solid #fff;
+    box-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff, inset 0 0 15px #ff00ff;
+    transform: rotate(4deg);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  /* 3. Pop-Art Comic Style */
+  .frame-comic {
+    border: 6px solid black;
+    padding: 4px;
+    background: white;
+    box-shadow: 8px 8px 0px black;
+    transform: rotate(-4deg);
+  }
+  .pow-sticker {
+    position: absolute;
+    bottom: -15px; right: -15px;
+    background: #ffea00;
+    color: #ff0000;
+    font-size: 1.2em;
+    font-weight: 900;
+    border: 3px solid black;
+    padding: 5px 10px;
+    border-radius: 50%;
+    transform: rotate(-15deg);
+    z-index: 5;
+    box-shadow: 4px 4px 0px black;
+  }
+
+  /* 4. Chunky 90s Border */
+  .frame-chunky {
+    border: 8px dashed #ff9a9e;
+    padding: 6px;
+    background: #fecfef;
+    transform: rotate(7deg);
+    border-radius: 15px;
+  }
+
+  /* 5. Rainbow Gradient Jewel */
+  .frame-jewel {
+    padding: 8px;
+    background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+    border-radius: 20px;
+    transform: rotate(-8deg);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 5px 15px rgba(0,0,0,0.4);
+  }
+  .frame-jewel img { border-radius: 12px; }
+
+  /* 6. Classic Film Strip */
+  .frame-film {
+    border-top: 15px solid #222;
+    border-bottom: 15px solid #222;
+    border-left: 5px solid #222;
+    border-right: 5px solid #222;
+    background: #222;
+    transform: rotate(3deg);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  }
+
+  /* 7. Postage Stamp */
+  .frame-stamp {
+    background: white;
+    padding: 10px;
+    border: 8px dashed #e0e0e0;
+    transform: rotate(-5deg);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+  }
+
+  /* 8. Holographic / Glitter */
+  .frame-holo {
+    padding: 6px;
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    border: 5px solid #fff;
+    box-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px #ffb6ff, inset 0 0 15px #bdf4ff;
+    transform: rotate(6deg);
+    border-radius: 5px;
+  }
+
+  /* --- HANDWRITTEN PAPER NOTE --- */
+  .paper-note {
+    width: 100%;
+    max-width: 600px;
+    background: #fdf8c3; /* Sticky note yellow */
+    padding: 45px 40px 45px;
+    margin-bottom: 40px;
+    border-radius: 2px 2px 30px 2px; /* Curl effect on bottom right */
+    box-shadow: 
+      8px 15px 25px rgba(0,0,0,0.3),
+      inset 0 0 20px rgba(200,150,0,0.05);
+    position: relative;
+    transform: rotate(-2deg); /* Slightly tilted */
+    font-family: 'Kalam', cursive; /* Realistic handwriting */
+    font-size: 1.6em;
+    color: #111; /* Dark ink color */
+    line-height: 1.6;
+    white-space: pre-line;
+    z-index: 10;
+  }
+
+  /* The piece of tape holding the note */
+  .paper-note::before {
+    content: "";
+    position: absolute;
+    top: -15px; 
+    left: 50%;
+    transform: translateX(-50%) rotate(3deg);
+    width: 140px; 
+    height: 35px;
+    background: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    z-index: 5;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 2px; height: 1.2em;
+    background: #111; /* Dark cursor to match the ink */
+    animation: blink 1s infinite;
+    vertical-align: middle;
+  }
+  @keyframes blink { 0%, 50% {opacity: 1;} 51%, 100% {opacity: 0;} }
+
+  /* Surprise button */
+  .surprise-btn {
+    background: rgba(255,255,255,0.25);
+    border: 2px solid white;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s;
+    backdrop-filter: blur(5px);
+  }
+  .surprise-btn:hover {
+    background: white;
+    color: #764ba2;
+    transform: scale(1.05);
+  }
+
+  /* Effects elements */
+  .balloon, .heart, .confetti, .sparkle {
+    position: fixed;
+    pointer-events: none;
+  }
+  .balloon {
+    font-size: 40px;
+    animation: floatUp 8s linear forwards;
+    z-index: 0;
+  }
+  @keyframes floatUp { to {transform: translateY(-110vh) translateX(50px); opacity: 0;} }
+  .sparkle {
+    font-size: 16px;
+    animation: sparkleFade 1s forwards;
+    z-index: 10;
+  }
+  @keyframes sparkleFade { to {opacity: 0; transform: scale(2);} }
+  .heart {
+    font-size: 24px;
+    animation: rise 3s linear forwards;
+  }
+  @keyframes rise { to {transform: translateY(-100vh) scale(1.5); opacity: 0;} }
+  .confetti {
+    top: -10px;
+    font-size: 22px;
+    animation: fall 6s linear infinite;
+  }
+  @keyframes fall { to {transform: translateY(110vh) rotate(720deg);} }
+</style>
+</head>
+<body>
+
+<audio loop id="bgm">
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<div class="start-screen" id="startScreen">
+  <h2>🎁 Something special for you...</h2>
+  <button class="start-btn" onclick="startSurprise()">Start the Surprise</button>
+</div>
+
+<div class="main-content" id="mainContent">
+<div class="container">
+  <h1>Happy Birthday, Parinita! 🎉</h1>
+
+  <div class="friendship-timer" id="friendshipTimer"></div>
+
+  <div class="candle-container" id="candleContainer" onclick="blowCandle()">
+    <div class="candle-flame"></div>
+    <div class="smoke"></div>
+    <div class="candle-wick"></div>
+    <div class="candle-stick"></div>
+  </div>
+
+  <div class="funky-photo-board">
+    <div class="frame frame-polaroid">
+      <div class="tape"></div>
+      <img src="photo1.JPEG" alt="Bestie 1">
+    </div>
+    <div class="frame frame-neon">
+      <img src="photo2.JPEG" alt="Bestie 2">
+    </div>
+    <div class="frame frame-comic">
+      <img src="photo3.JPEG" alt="Bestie 3">
+      <div class="pow-sticker">POW!</div>
+    </div>
+    <div class="frame frame-chunky">
+      <img src="photo4.JPEG" alt="Bestie 4">
+    </div>
+    <div class="frame frame-jewel">
+      <img src="photo5.JPEG" alt="Bestie 5">
+    </div>
+    <div class="frame frame-film">
+      <img src="photo6.JPEG" alt="Bestie 6">
+    </div>
+    <div class="frame frame-stamp">
+      <img src="photo7.JPEG" alt="Bestie 7">
+    </div>
+    <div class="frame frame-holo">
+      <img src="photo8.JPEG" alt="Bestie 8">
+    </div>
+  </div>
+
+  <div class="paper-note">
+    <span id="typed-text"></span><span class="cursor"></span>
+  </div>
+
+  <button class="surprise-btn" onclick="bigSurprise()">Click for a Surprise 🎁</button>
+</div>
+</div>
+
+<script>
+  let typingStarted = false;
+  const startDate = new Date('2023-07-01T00:00:00');
+
+  // Start the surprise
+  function startSurprise() {
+    document.getElementById('startScreen').style.opacity = '0';
+    setTimeout(() => {
+      document.getElementById('startScreen').style.display = 'none';
+      document.getElementById('mainContent').classList.add('show');
+      
+      document.getElementById('bgm').play().catch(e => console.log("Audio play blocked, needs gesture"));
+      
+      if(!typingStarted) typeWriter();
+      launchBalloons();
+      updateTimer(); 
+      setInterval(updateTimer, 1000); 
+    }, 1000);
+  }
+
+  // Friendship Timer
+  function updateTimer() {
+    const now = new Date();
+    let diff = now - startDate;
+
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    const years = Math.floor(days / 365);
+    const remainingDays = days % 365;
+    const months = Math.floor(remainingDays / 30);
+    const daysLeft = remainingDays % 30;
+
+    const hrs = hours % 24;
+    const mins = minutes % 60;
+    const secs = seconds % 60;
+
+    document.getElementById('friendshipTimer').innerHTML =
+      `We've been friends for: ${years}y ${months}m ${daysLeft}d ${hrs}h ${mins}m ${secs}s 💖`;
+  }
+
+  // Exact customized text
+  const text = `Parinita,\n\nHappy birthday.\n\nIn the 2+ years since July 1, 2023, you’ve gone from “someone I talk to” to “someone I’m stuck with for life.” Sorry, not sorry. 😜\n\nYou’re smart, you’re strong, and you don’t take crap from anyone. Never change that.\n\nIf anyone messes with you, they deal with me. If you need anything, you call me. That’s the deal.\n\nNow go celebrate like the queen you are.\n\n- Rayhan`;
+
+  let i = 0;
+  function typeWriter() {
+    typingStarted = true;
+    if (i < text.length) {
+      document.getElementById('typed-text').innerHTML += text.charAt(i) === '\n'? '<br>' : text.charAt(i);
+      i++;
+      setTimeout(typeWriter, 50); // Slightly slower to mimic handwriting speed
+    }
+  }
+
+  // Confetti generator
+  function createConfetti() {
+    const conf = document.createElement('div');
+    conf.classList.add('confetti');
+    conf.style.left = Math.random() * 100 + 'vw';
+    conf.style.animationDuration = Math.random() * 3 + 3 + 's';
+    conf.innerHTML = ['🎉','🎂','🎈','✨','💖'][Math.floor(Math.random()*5)];
+    document.body.appendChild(conf);
+    setTimeout(() => conf.remove(), 6000);
+  }
+  setInterval(createConfetti, 500);
+
+  // Balloons
+  function launchBalloons() {
+    for(let i=0; i<12; i++) {
+      setTimeout(() => {
+        const balloon = document.createElement('div');
+        balloon.classList.add('balloon');
+        balloon.style.left = Math.random() * 100 + 'vw';
+        balloon.style.bottom = '-50px';
+        balloon.innerHTML = ['🎈','💝','✨'][Math.floor(Math.random()*3)];
+        document.body.appendChild(balloon);
+        setTimeout(() => balloon.remove(), 8000);
+      }, i * 300);
+    }
+  }
+
+  // Mouse trail particles
+  document.addEventListener('mousemove', (e) => {
+    if(Math.random() > 0.15) return; 
+    const sparkle = document.createElement('div');
+    sparkle.classList.add('sparkle');
+    sparkle.style.left = e.clientX + 'px';
+    sparkle.style.top = e.clientY + 'px';
+    sparkle.innerHTML = '✨';
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 1000);
+  });
+
+  // Hearts on screen clicks
+  document.addEventListener('click', (e) => {
+    if(e.target.closest('#candleContainer') || e.target.closest('.start-btn') || e.target.closest('.surprise-btn') || e.target.closest('.frame') || e.target.closest('.paper-note')) return;
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = e.clientX + 'px';
+    heart.style.top = e.clientY + 'px';
+    heart.innerHTML = '💖';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 3000);
+  });
+
+  // Blow candle function
+  function blowCandle() {
+    const candle = document.getElementById('candleContainer');
+    if(!candle.classList.contains('blown')) {
+      candle.classList.add('blown');
+      for(let i=0; i<40; i++) {
+         setTimeout(createConfetti, i * 20);
+      }
+    }
+  }
+
+  // Big surprise button 
+  function bigSurprise() {
+    for(let i=0; i<80; i++) createConfetti();
+    const extraSpan = document.createElement('span');
+    extraSpan.innerHTML = '<br><br><strong>👑 PS: You deserve all the cake in the world today! 🍰</strong>';
+    document.getElementById('typed-text').appendChild(extraSpan);
+  }
+</script>
+
+</body>
+</html>
